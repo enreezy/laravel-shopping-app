@@ -69,7 +69,7 @@
               <!--Card image-->
               <div class="view overlay">
                 <img src="storage/images/shirt.jpg" alt="" width="250px;" height="250px;">
-                <a>
+                <a href="{{ route('item.show', ['id'=>$item->id]) }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
               </div>
@@ -83,7 +83,7 @@
                 </a>
                 <h5>
                   <strong>
-                    <a href="" class="dark-grey-text">Denim shirt
+                    <a href="{{ route('item.show', ['id'=>$item->id]) }}" class="dark-grey-text">{{ $item->name }}
                       <span class="badge badge-pill danger-color">NEW</span>
                     </a>
                   </strong>

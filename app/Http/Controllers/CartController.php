@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Cart;
+use \Cart;
 use Illuminate\Http\Request;
 use App\Item;
 use App\Repository\ItemRepository;
+use Auth;
+
 
 class CartController extends Controller
 {
     protected $item;
+
+    protected $cart;
 
     public function __construct(Item $item)
     {
@@ -46,7 +50,12 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $userId = auth()->user()->id;
+        Cart::add($request->id, $request->name, $request->price, $request->quantity, [$request->size, $request->color]);
+
+        //return redirect()->route('shopping.index');
+        dd(Cart::getContent()); 
+        //dd($request); 
     }
 
     /**
@@ -57,7 +66,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-
+        return view('cart.checkout');
     }
 
     /**
@@ -80,7 +89,16 @@ class CartController extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
-        //
+        $userId = auth()->user()->id; // or any string represents user identifier
+        Cart::session($userId)->update($request->id, array(
+          'name' => $request->name, // new item name
+          'price' => $request->price, // new item price, price can also be a string format like so: '98.67'
+          'quantity' => $request->quantity,
+          'attributes' => [
+            'size' => $request->size,
+            'color' => $request->color
+          ]
+        ));
     }
 
     /**
@@ -91,6 +109,7 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        $userId = auth()->user()->id;
+        Cart::session($userId)->remove($request->id);
     }
 }

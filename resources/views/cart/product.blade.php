@@ -46,9 +46,16 @@
 
             <p>{{ $item->description }}</p>
 
-            <form class="d-flex justify-content-left">
+            <form class="d-flex justify-content-left" method="post" action="{{ route('shopping.store') }}">
+              {{ csrf_field() }}
               <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+              <input type="number" value="1" name="quantity" aria-label="Search" class="form-control" style="width: 100px">
+              <input type="hidden" value="{{ $item->name }}" name="name">
+              <input type="hidden" value="{{ $item->id }}" name="id">
+              <input type="hidden" value="{{ $item->price }}" name="price">
+              <input type="hidden" value="Large" name="size">
+              <input type="hidden" value="Red" name="color">
+
               <button class="btn btn-primary btn-md my-0 p" type="submit">Add to cart
                 <i class="fa fa-shopping-cart ml-1"></i>
               </button>

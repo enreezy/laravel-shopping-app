@@ -21,7 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/shopping', 'CartController', [
 	'names' => [
-		'index' => 'shopping.index'
+		'index' => 'shopping.index',
+		'store' => 'shopping.store',
+		'show' => 'shopping.show',
 	]
 ]);
 
@@ -30,3 +32,11 @@ Route::resource('/item', 'ItemController', [
 		'show' => 'item.show'
 	]
 ]);
+
+Route::resource('/checkout', 'ShoppingController',[
+	'names' => [
+		'index' => 'checkout.index',
+	]
+]);
+
+
