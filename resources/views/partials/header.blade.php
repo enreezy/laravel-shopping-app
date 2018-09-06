@@ -84,7 +84,7 @@
         <ul class="navbar-nav nav-flex-icons">
           <li class="nav-item">
             <a class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"> 1 </span>
+              <span class="badge red z-depth-1 mr-1"> {{ $cartCount }} </span>
               <i class="fa fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
             </a>

@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use \Cart;
 use Illuminate\Http\Request;
-use App\Item;
 use App\Repository\ItemRepository;
 use Auth;
-
-
+use Illuminate\Routing\ResponseFactory;
+use Cart;
 class CartController extends Controller
 {
     protected $item;
 
-    protected $cart;
 
-    public function __construct(Item $item)
+    protected $response;
+
+    public function __construct(ItemRepository $item,ResponseFactory $response)
     {
-        $this->middleware('auth');
-        $this->item = new ItemRepository($item);
+        //injected repository
+        $this->item = $item;
+        //injected response
+        $this->response = $response;
     }
     /**
      * Display a listing of the resource.
@@ -29,7 +30,11 @@ class CartController extends Controller
     {
 
         $items = $this->item->paginate(10);
-        return view('cart.home', ['items'=>$items]);
+        $cart = Cart::getContent();
+        return $this->response->view('cart.home', [
+            'items'=>$items,
+            'cartCount'=>$cart->count()
+        ]);
     }
 
     /**
@@ -50,12 +55,8 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = auth()->user()->id;
         Cart::add($request->id, $request->name, $request->price, $request->quantity, [$request->size, $request->color]);
-
-        //return redirect()->route('shopping.index');
-        dd(Cart::getContent()); 
-        //dd($request); 
+        return $this->response->redirectToRoute('shopping.index');
     }
 
     /**
@@ -66,7 +67,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        return view('cart.checkout');
+
     }
 
     /**

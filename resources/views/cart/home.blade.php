@@ -2,7 +2,6 @@
 
 
 @section('content')
-
 <!--Main layout-->
   <main>
     <div class="container">
@@ -58,7 +57,6 @@
 
         <!--Grid row-->
         <div class="row wow fadeIn">
-
           @foreach($items as $item)
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4">

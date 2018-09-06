@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Item;
 use Illuminate\Database\Eloquent\Model;
 use App\Repository\ItemRepositoryInterface;
 
@@ -9,7 +10,7 @@ class ItemRepository implements ItemRepositoryInterface
 {
 	protected $model;
 
-	public function __construct(Model $model)
+	public function __construct(Item $model)
 	{
 		$this->model = $model;
 	}

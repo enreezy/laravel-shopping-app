@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Item;
 use Illuminate\Http\Request;
-use App\Cart;
 use App\Repository\ItemRepository;
+use Cart;
 
 class ItemController extends Controller
 {
@@ -55,7 +55,11 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return view('cart.product', ['item'=>$item]);
+        $cart = Cart::getContent();
+        return view('cart.product', [
+            'item'=>$item,
+            'cartCount'=>$cart->count()
+        ]);
     }
 
     /**
