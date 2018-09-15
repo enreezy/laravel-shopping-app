@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repository\ItemRepository;
+use App\Repository\CategoryRepository;
 use Auth;
 use Illuminate\Routing\ResponseFactory;
 use Cart;
@@ -11,15 +12,20 @@ class CartController extends Controller
 {
     protected $item;
 
+    protected $category;
 
     protected $response;
 
-    public function __construct(ItemRepository $item,ResponseFactory $response)
+    public function __construct(ItemRepository $item,ResponseFactory $response,CategoryRepository $category)
     {
+        $this->middleware('auth:admin');
+        $this->middleware('customer');
         //injected repository
         $this->item = $item;
         //injected response
         $this->response = $response;
+
+        $this->category = $category;
     }
     /**
      * Display a listing of the resource.
@@ -30,10 +36,12 @@ class CartController extends Controller
     {
 
         $items = $this->item->paginate(10);
+        $category = $this->category->all();
         $cart = Cart::getContent();
         return $this->response->view('cart.home', [
             'items'=>$items,
-            'cartCount'=>$cart->count()
+            'cartCount'=>$cart->count(),
+            'category'=>$category
         ]);
     }
 
@@ -44,7 +52,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -55,8 +63,8 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        Cart::add($request->id, $request->name, $request->price, $request->quantity, [$request->size, $request->color]);
-        return $this->response->redirectToRoute('shopping.index');
+        Cart::add($request->id, $request->name, $request->price, $request->quantity, ['size'=>$request->size, 'color'=>$request->color]);
+        return back()->withInput();
     }
 
     /**
@@ -65,9 +73,14 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(Cart $cart)
+    public function show($id)
     {
-
+        $cart = Cart::getContent();
+        $item = $this->item->findOrFail($id);
+        return $this->response->view('cart.product', [
+            'item'=>$item,
+            'cartCount'=>$cart->count()
+        ]);
     }
 
     /**
@@ -91,7 +104,7 @@ class CartController extends Controller
     public function update(Request $request, Cart $cart)
     {
         $userId = auth()->user()->id; // or any string represents user identifier
-        Cart::session($userId)->update($request->id, array(
+        Cart::update($request->id, array(
           'name' => $request->name, // new item name
           'price' => $request->price, // new item price, price can also be a string format like so: '98.67'
           'quantity' => $request->quantity,
@@ -110,7 +123,13 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        $userId = auth()->user()->id;
-        Cart::session($userId)->remove($request->id);
+        Cart::remove($id);
+        return redirect()->back();
+    }
+
+    public function empty()
+    {
+        Cart::empty();
+        return redirect()->back();
     }
 }

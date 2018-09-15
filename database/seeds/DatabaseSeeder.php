@@ -3,9 +3,24 @@
 use Illuminate\Database\Seeder;
 use App\Item;
 use App\User;
+use App\Role;
+use App\Category;
 
 class DatabaseSeeder extends Seeder
-{
+{   
+    protected $items;
+
+    protected $users;
+
+    protected $roles;
+
+    protected $seeds = [
+        'migration',
+        'items',
+        'users',
+        'roles',
+        'category'
+    ];
     /**
      * Seed the application's database.
      *
@@ -13,7 +28,59 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Item::class, 15)->create();
-        factory(User::class)->create();
+        foreach($this->seeds as $seed)
+        {
+            call_user_func([$this, $seed]);
+        }
     }
+
+    public function migration()
+    {
+        $this->command->call('migrate:fresh');
+        $this->command->line('Migrated tables');
+    }
+
+    public function items()
+    {
+        $this->items = factory(Item::class, 20)->create();
+        $this->command->line('Seeded Items');
+    }
+
+    public function users()
+    {
+        $this->users = factory(User::class, 2)->create();
+        $this->users[0]->email = 'admin@admin.com';
+        $this->users[1]->email = 'test@test.com';
+        $this->users[0]->save();
+        $this->users[1]->save();
+
+        $this->command->line('Seeded Users');
+    }
+
+    public function roles()
+    {
+        $role = [
+            'admin',
+            'customer'
+        ];
+
+        $id = 1;
+        for($i=0; $i<=1; $i++){
+            factory(Role::class)->create(['user_id'=>$id, 'role'=>$role[$i]]);
+            $id++;
+        }
+
+        $this->command->line('Seeded Roles');
+    }
+
+    public function category()
+    {
+        factory(Category::class, 5)->create();
+
+        $this->command->line('Seeded Category');
+    }
+
+
+
+
 }

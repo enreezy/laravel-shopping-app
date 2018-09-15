@@ -18,6 +18,11 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+    public function role()
+    {
+        return $this->hasOne('App\Role');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -4,9 +4,8 @@ namespace App\Repository;
 
 use App\Item;
 use Illuminate\Database\Eloquent\Model;
-use App\Repository\ItemRepositoryInterface;
 
-class ItemRepository implements ItemRepositoryInterface
+class ItemRepository
 {
 	protected $model;
 
@@ -24,4 +23,30 @@ class ItemRepository implements ItemRepositoryInterface
 	{
 		return $this->model->paginate($page);
 	}
+
+	public function findOrFail($id)
+	{
+		return $this->model->findOrFail($id);
+	}
+
+	public function store(array $data)
+	{
+		$this->model->create($data);
+	}
+
+	public function show($id)
+	{
+		return $this->model->findOrFail($id);
+	}
+
+	public function update($item, array $data)
+	{
+		return $item->update($data);
+	}
+
+	public function delete($item)
+	{
+		return $item->delete();
+	}
+
 }

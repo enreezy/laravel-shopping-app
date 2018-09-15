@@ -7,6 +7,59 @@
   <main class="mt-5 pt-4">
     <div class="container wow fadeIn">
 
+      <!-- Table  -->
+      <table class="table table-hover table-bordered">
+          <!-- Table head -->
+          <thead class="blue lighten-4">
+              <tr>
+                  <th>#</th>
+                  <th>Item Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <!-- Table head -->
+
+          <!-- Table body -->
+          <tbody>
+          <?php $c = 1; ?>
+          @foreach($cartItem as $cart)
+              <tr>
+                  <th scope="row">{{ $c }}</th>
+                  <td>{{ $cart->name }}</td>
+                  <td>
+
+                    <form class="form-inline" action="{{ route('visitor.update', ['id'=>$cart->id]) }}" method="post">
+                      {{ csrf_field() }}
+                      {{ method_field('PUT') }}
+                      <input type="number" value="{{ $cart->quantity }}" name="quantity" min="1" max="10" class="form-control"/>
+                      <button type="submit" class="btn btn-success">Update</button>
+                    </form>
+
+                  </td>
+                  <td>P{{ $cart->price }}</td>
+                  <td>
+                    <form action="{{ route('visitor.destroy', ['id'=>$cart->id]) }}" method="post">
+                      {{ csrf_field() }}
+                      {{ method_field('PUT') }}
+                      <button class="btn btn-danger" type="submit">Remove</button>
+
+                    </form>
+
+                  </td>
+              </tr>
+      
+          </tbody>
+          <?php $c++; ?>
+          @endforeach
+          <!-- Table body -->
+      </table>
+      <!-- Table  -->
+
+
+
+
       <!-- Heading -->
       <h2 class="my-5 h2 text-center">Checkout form</h2>
 
@@ -20,7 +73,8 @@
           <div class="card">
 
             <!--Card content-->
-            <form class="card-body">
+            <form class="card-body" method="post" action="">
+              {{ csrf_field() }}
 
               <!--Grid row-->
               <div class="row">
@@ -30,7 +84,7 @@
 
                   <!--firstName-->
                   <div class="md-form ">
-                    <input type="text" id="firstName" class="form-control">
+                    <input type="text" id="firstName" class="form-control" name="firstname">
                     <label for="firstName" class="">First name</label>
                   </div>
 
@@ -42,7 +96,7 @@
 
                   <!--lastName-->
                   <div class="md-form">
-                    <input type="text" id="lastName" class="form-control">
+                    <input type="text" id="lastName" class="form-control" name="lastname">
                     <label for="lastName" class="">Last name</label>
                   </div>
 
@@ -57,24 +111,24 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1">@</span>
                 </div>
-                <input type="text" class="form-control py-0" placeholder="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control py-0" placeholder="Username" aria-describedby="basic-addon1" name="username">
               </div>
 
               <!--email-->
               <div class="md-form mb-5">
-                <input type="text" id="email" class="form-control" placeholder="youremail@example.com">
-                <label for="email" class="">Email (optional)</label>
+                <input type="text" id="email" class="form-control" placeholder="youremail@example.com" name="email">
+                <label for="email" class="">Email</label>
               </div>
 
               <!--address-->
               <div class="md-form mb-5">
-                <input type="text" id="address" class="form-control" placeholder="1234 Main St">
+                <input type="text" id="address" class="form-control" placeholder="1234 Main St" name="address">
                 <label for="address" class="">Address</label>
               </div>
 
               <!--address-2-->
               <div class="md-form mb-5">
-                <input type="text" id="address-2" class="form-control" placeholder="Apartment or suite">
+                <input type="text" id="address-2" class="form-control" placeholder="Apartment or suite" name="address2">
                 <label for="address-2" class="">Address 2 (optional)</label>
               </div>
 
@@ -203,32 +257,22 @@
           <!-- Heading -->
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Your cart</span>
-            <span class="badge badge-secondary badge-pill">3</span>
+            <span class="badge badge-secondary badge-pill"> {{ $cartCount }}</span>
           </h4>
 
           <!-- Cart -->
           <ul class="list-group mb-3 z-depth-1">
+
+          @foreach($cartItem as $cart) 
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
+                <h6 class="my-0">{{ $cart->name }} </h6>
+                <small class="text-muted">{{ $cart->quantity }}</small>
               </div>
-              <span class="text-muted">$12</span>
+              <span class="text-muted">P{{ $cart->price }} ({{$cart->quantity}})</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$5</span>
-            </li>
+          @endforeach
+
             <li class="list-group-item d-flex justify-content-between bg-light">
               <div class="text-success">
                 <h6 class="my-0">Promo code</h6>
@@ -237,8 +281,8 @@
               <span class="text-success">-$5</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>$20</strong>
+              <span>Total (PHP)</span>
+              <strong>P{{ $total }}</strong>
             </li>
           </ul>
           <!-- Cart -->

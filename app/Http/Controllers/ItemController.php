@@ -4,17 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Item;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreItemRequest;
 use App\Repository\ItemRepository;
+use App\Repository\CategoryRepository;
+use Illuminate\Routing\ResponseFactory;
 use Cart;
 
 class ItemController extends Controller
 {
     protected $item;
 
-    public function __construct(Item $item)
+    protected $response;
+
+    public function __construct(ItemRepository $item, ResponseFactory $response)
     {
-        $this->middleware('auth');
+        $this->middleware('auth:admin');
+        $this->middleware('admin');
         $this->item = $item;
+        $this->response = $response;
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +30,11 @@ class ItemController extends Controller
      */
     public function index()
     {
+        $items = $this->item->paginate(10);
 
+        return $this->response->view('admin.item.index', [
+            'items' => $items
+        ]);
     }
 
     /**
@@ -31,9 +42,11 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CategoryRepository $category)
     {
-        //
+        return $this->response->view('admin.item.create', [
+            'categories'=>$category->all()
+        ]);
     }
 
     /**
@@ -42,9 +55,28 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(StoreItemRequest $request)
+    {   
+        
+        $image = $request->file('img_src');
+        $img_url = $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+        $file = $request->file('img_src')->storeAs('storage/images', $img_url, 'public');
+        $attributes = ['size'=>$request->size, 'color'=>$request->color];
+
+        $data = [
+            'name'=>$request->name,
+            'price'=>$request->price,
+            'quantity'=>$request->quantity,
+            'img_src'=>$img_url,
+            'attributes'=>$attributes,
+            'category'=>$request->category,
+            'description'=>$request->description
+        ];
+
+        $this->item->store($data);
+
+        return redirect()->back();
+
     }
 
     /**
@@ -55,11 +87,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        $cart = Cart::getContent();
-        return view('cart.product', [
-            'item'=>$item,
-            'cartCount'=>$cart->count()
-        ]);
+        return $this->response->view('admin.item.show', ['item'=>$item]);
     }
 
     /**
@@ -70,7 +98,7 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return $this->response->view('admin.item.edit', ['item'=>$item]);
     }
 
     /**
@@ -82,7 +110,25 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        if($request->img_src == null)
+        {
+            $img_src = $item->img_src;
+        }else{
+            $img_src = $request->img_src;
+        }
+
+        $data = [
+            'name'=>$request->name,
+            'price'=>$request->price,
+            'quantity'=>$request->quantity,
+            'img_src'=>$img_src,
+            'attributes'=>"['size'=>$request->size, 'color'=>$request->color]",
+            'category'=>$request->category,
+            'description'=>$request->description
+        ];
+
+        $this->item->update($item, $data);
+        return redirect()->back();
     }
 
     /**
@@ -93,6 +139,7 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $this->item->delete($item);
+        return redirect()->back();
     }
 }

@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Material Design Bootstrap</title>
+  <title>Fashion Savvy</title>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ asset('css/font-awesome/css/font-awesome.min.css') }}">
   <!-- Bootstrap core CSS -->
   <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Material Design Bootstrap -->
@@ -49,7 +49,12 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">
+      @if(Auth::user())
+        <a class="navbar-brand waves-effect" href="{{ route('shopping.index') }}">
+      @else
+        <a class="navbar-brand waves-effect" href="{{ route('visitor.index') }}">
+      @endif
+
         <strong class="blue-text">Fashion Savvy</strong>
       </a>
 
@@ -69,21 +74,16 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About MDB</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="https://mdbootstrap.com/getting-started/" target="_blank">Free download</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank">Free tutorials</a>
-          </li>
         </ul>
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
           <li class="nav-item">
-            <a class="nav-link waves-effect">
+          @if(Auth::user())
+            <a class="nav-link waves-effect" href="{{ route('checkout.index') }}">
+          @else
+            <a class="nav-link waves-effect" href="{{ route('visitor.checkout') }}">
+          @endif
               <span class="badge red z-depth-1 mr-1"> {{ $cartCount }} </span>
               <i class="fa fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -100,10 +100,24 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link border border-light rounded waves-effect"
-              target="_blank">
-              <i class="fa fa-github mr-2"></i>MDB GitHub
+          @if(Auth::user())
+
+            <a href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                <button class="btn btn-info btn-sm">Logout</button>
             </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            
+          @else
+            <a href="/fashionsavvy/visitor/login">
+              <button class="btn btn-info btn-sm">Login</button>
+            </a>
+          @endif
+              
           </li>
         </ul>
 
@@ -141,16 +155,15 @@
               </h1>
 
               <p>
-                <strong>Best & free guide of responsive web design</strong>
+                <strong>Best & Friendly Shopping</strong>
               </p>
 
               <p class="mb-4 d-none d-md-block">
-                <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written versions
-                  available. Create your own, stunning website.</strong>
+                <strong>The most comprehensive Ordering site. Loved by over 500 000 users.</strong>
               </p>
 
-              <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-outline-white btn-lg">Start free tutorial
-                <i class="fa fa-graduation-cap ml-2"></i>
+              <a href="{{ route('visitor.index') }}" class="btn btn-outline-white btn-lg">Order Now
+                <i class="fa fa-shopping-cart ml-2"></i>
               </a>
             </div>
             <!-- Content -->
@@ -172,20 +185,19 @@
             <!-- Content -->
             <div class="text-center white-text mx-5 wow fadeIn">
               <h1 class="mb-4">
-                <strong>Learn Bootstrap 4 with MDB</strong>
+                <strong>Fashion Savvy</strong>
               </h1>
 
               <p>
-                <strong>Best & free guide of responsive web design</strong>
+                <strong>Affordable Items and Good Quality</strong>
               </p>
 
               <p class="mb-4 d-none d-md-block">
-                <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written versions
-                  available. Create your own, stunning website.</strong>
+                <strong>The most comprehensive Ordering site. Loved by over 500 000 users.</strong>
               </p>
 
-              <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-outline-white btn-lg">Start free tutorial
-                <i class="fa fa-graduation-cap ml-2"></i>
+              <a href="{{ route('visitor.index') }}" class="btn btn-outline-white btn-lg">Order Now
+                <i class="fa fa-shopping-cart ml-2"></i>
               </a>
             </div>
             <!-- Content -->
@@ -199,7 +211,7 @@
 
       <!--Third slide-->
       <div class="carousel-item">
-        <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/8-col/img%285%29.jpg'); background-repeat: no-repeat; background-size: cover;">
+        <div class="view" style="background-image: url(''); background-repeat: no-repeat; background-size: cover;">
 
           <!-- Mask & flexbox options-->
           <div class="mask rgba-black-strong d-flex justify-content-center align-items-center">
@@ -207,20 +219,19 @@
             <!-- Content -->
             <div class="text-center white-text mx-5 wow fadeIn">
               <h1 class="mb-4">
-                <strong>Learn Bootstrap 4 with MDB</strong>
+                <strong>Fashion Savvy</strong>
               </h1>
 
               <p>
-                <strong>Best & free guide of responsive web design</strong>
+                <strong>Affordable Items and Good Quality</strong>
               </p>
 
               <p class="mb-4 d-none d-md-block">
-                <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written versions
-                  available. Create your own, stunning website.</strong>
+                <strong>The most comprehensive Ordering site. Loved by over 500 000 users.</strong>
               </p>
 
-              <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-outline-white btn-lg">Start free tutorial
-                <i class="fa fa-graduation-cap ml-2"></i>
+              <a href="{{ route('visitor.index') }}" class="btn btn-outline-white btn-lg">Order Now
+                <i class="fa fa-shopping-cart ml-2"></i>
               </a>
             </div>
             <!-- Content -->

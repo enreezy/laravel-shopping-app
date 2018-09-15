@@ -3,12 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\ResponseFactory;
+use App\Repository\OrderRepository;
+use App\Order;
+use \Cart;
+use Auth;
 
 class ShoppingController extends Controller
 {
-    public function __construct()
+    protected $response;
+
+    protected $order;
+
+    public function __construct(ResponseFactory $response, OrderRepository $order)
     {
-        return $this->middleware('auth');
+        $this->middleware('auth:admin');
+        $this->middleware('customer');
+
+        $this->response = $response;
+        $this->order = $order;
     }
     /**
      * Display a listing of the resource.
@@ -17,7 +30,13 @@ class ShoppingController extends Controller
      */
     public function index()
     {
-        return view('cart.checkout');
+        $cart = Cart::getContent();
+        $total = Cart::getTotal();
+        return $this->response->view('cart.checkout', [
+            'cartItem' => $cart,
+            'total'=> $total,
+            'cartCount'=>$cart->count()
+        ]);
     }
 
     /**
@@ -38,7 +57,18 @@ class ShoppingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'user_id'=>auth()->user()->id,
+            'orders'=>Cart::getContent(),
+            'total'=>Cart::getTotal(),
+            'firstname'=>$request->firstname,
+            'lastname'=>$request->lastname,
+            'email'=>$request->email,
+            'address'=>$request->address
+        ];
+
+        $this->order->store($data);
+        return $this->response->redirectToRoute('checkout.index');
     }
 
     /**

@@ -46,7 +46,11 @@
 
             <p>{{ $item->description }}</p>
 
+            @if(Auth::user())
             <form class="d-flex justify-content-left" method="post" action="{{ route('shopping.store') }}">
+            @else
+            <form class="d-flex justify-content-left" method="post" action="{{ route('visitor.store') }}">
+            @endif
               {{ csrf_field() }}
               <!-- Default input -->
               <input type="number" value="1" name="quantity" aria-label="Search" class="form-control" style="width: 100px">
@@ -61,6 +65,7 @@
               </button>
 
             </form>
+
 
           </div>
           <!--Content-->

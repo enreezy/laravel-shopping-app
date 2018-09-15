@@ -3,12 +3,12 @@
 
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
+     <!--  <a class="btn btn-outline-white" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download MDB
         <i class="fa fa-download ml-2"></i>
       </a>
       <a class="btn btn-outline-white" href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank" role="button">Start free tutorial
         <i class="fa fa-graduation-cap ml-2"></i>
-      </a>
+      </a> -->
     </div>
     <!--/.Call to action-->
 
@@ -53,7 +53,7 @@
     <!--Copyright-->
     <div class="footer-copyright py-3">
       © 2018 Copyright:
-      <a href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank"> MDBootstrap.com </a>
+      <a href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank"> Fashion Savvy </a>
     </div>
     <!--/.Copyright-->
 

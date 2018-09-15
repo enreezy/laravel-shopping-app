@@ -28,15 +28,11 @@
                 <span class="sr-only">(current)</span>
               </a>
             </li>
+            @foreach($category as $c)
             <li class="nav-item">
-              <a class="nav-link" href="#">Shirts</a>
+              <a class="nav-link" href="#">{{ $c->name }}</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Sport wears</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Outwears</a>
-            </li>
+            @endforeach
 
           </ul>
           <!-- Links -->
@@ -66,10 +62,14 @@
 
               <!--Card image-->
               <div class="view overlay">
-                <img src="storage/images/shirt.jpg" alt="" width="250px;" height="250px;">
-                <a href="{{ route('item.show', ['id'=>$item->id]) }}">
-                  <div class="mask rgba-white-slight"></div>
-                </a>
+                <img src="{{ asset('storage/images/' . $item->img_src) }}" alt="" width="250px;" height="250px;">
+                @if(Auth::user())
+                  <a href="{{ route('shopping.show', ['id'=>$item->id]) }}">
+                @else
+                  <a href="{{ route('visitor.show', ['id'=>$item->id]) }}">
+                @endif
+                    <div class="mask rgba-white-slight"></div>
+                  </a>
               </div>
               <!--Card image-->
 
@@ -81,7 +81,12 @@
                 </a>
                 <h5>
                   <strong>
-                    <a href="{{ route('item.show', ['id'=>$item->id]) }}" class="dark-grey-text">{{ $item->name }}
+                  @if(Auth::user())
+                    <a href="{{ route('shopping.show', ['id'=>$item->id]) }}" class="dark-grey-text">
+                  @else
+                    <a href="{{ route('visitor.show', ['id'=>$item->id]) }}" class="dark-grey-text">
+                  @endif
+                    {{ $item->name }}
                       <span class="badge badge-pill danger-color">NEW</span>
                     </a>
                   </strong>
