@@ -33,7 +33,7 @@
                     <form class="form-inline" action="{{ route('visitor.update', ['id'=>$cart->id]) }}" method="post">
                       {{ csrf_field() }}
                       {{ method_field('PUT') }}
-                      <input type="number" value="{{ $cart->quantity }}" name="quantity" min="1" max="10" class="form-control"/>
+                      <input type="number" value="{{ $cart->quantity }}" name="quantity" min="1" max="{{ $cart->attributes['max'] }}" class="form-control"/>
                       <button type="submit" class="btn btn-success">Update</button>
                     </form>
 

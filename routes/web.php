@@ -117,6 +117,21 @@ Route::group(['prefix'=>'fashionsavvy'], function(){
 			]
 		]);
 
+		Route::resource('/chat', 'MessageController', [
+			'names'=>[
+				'index' => 'message.index',
+				'store' => 'message.post',
+				'show' => 'message.show',
+			]
+		]);
+
+		Route::resource('/topic', 'TopicController', [
+			'names'=>[
+				'index' => 'topic.index',
+				'show' => 'topic.show'
+			]
+		]);
+
 		Route::get('/shopping/empty','CartController@empty')->name('shopping.empty');
 	});
 });

@@ -34,7 +34,6 @@ class CartController extends Controller
      */
     public function index()
     {
-
         $items = $this->item->paginate(10);
         $category = $this->category->all();
         $cart = Cart::getContent();
@@ -63,7 +62,7 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        Cart::add($request->id, $request->name, $request->price, $request->quantity, ['size'=>$request->size, 'color'=>$request->color]);
+        Cart::add($request->id, $request->name, $request->price, 1, ['size'=>$request->size, 'color'=>$request->color,'max'=>$request->quantity]);
         return back()->withInput();
     }
 

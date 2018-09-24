@@ -33,8 +33,8 @@ class CheckoutTest extends TestCase
     	$user = factory('App\User')->create();
     	factory('App\Role')->create(['user_id'=>$user->id, 'role'=>'customer']);
 
-    	\Cart::add(455, 'Sample Item', 100.99, 2, array('size'=>'Large', 'color'=>'Blue'));
-    	\Cart::add(155, 'Sample Item 2', 100.99, 2, array('size'=>'Large', 'color'=>'Blue'));
+    	\Cart::add(455, 'Sample Item', 100.99, 2, array('size'=>'Large', 'color'=>'Blue', 'max'=>10));
+    	\Cart::add(155, 'Sample Item 2', 100.99, 2, array('size'=>'Large', 'color'=>'Blue', 'max'=>10));
     	$orders = \Cart::getContent();
     	$total = \Cart::getTotal();
 
