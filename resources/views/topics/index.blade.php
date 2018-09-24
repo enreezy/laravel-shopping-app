@@ -76,7 +76,7 @@
                             </table>
                             <!-- Table  -->
 
-                            {{ $topics->links() }}
+                            
 
                         </div>
 
@@ -93,7 +93,7 @@
 
       <!--Pagination-->
       <nav class="d-flex justify-content-center wow fadeIn">
-        {{ $items->links() }}
+        {{ $topics->links() }}
       </nav>
       <!--Pagination-->
 

@@ -8,9 +8,9 @@ class TopicRepository
 {
 	protected $model;
 
-	public function __construct(Order $order)
+	public function __construct(Topic $topic)
 	{
-		$this->model = $order;
+		$this->model = $topic;
 	}
 
 	public function all()

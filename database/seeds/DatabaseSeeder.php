@@ -5,6 +5,7 @@ use App\Item;
 use App\User;
 use App\Role;
 use App\Category;
+use App\Topic;
 
 class DatabaseSeeder extends Seeder
 {   
@@ -19,7 +20,8 @@ class DatabaseSeeder extends Seeder
         'items',
         'users',
         'roles',
-        'category'
+        'category',
+        'topics'
     ];
     /**
      * Seed the application's database.
@@ -78,6 +80,15 @@ class DatabaseSeeder extends Seeder
         factory(Category::class, 5)->create();
 
         $this->command->line('Seeded Category');
+    }
+
+    public function topics()
+    {
+        $data = ['title'=>'Sample'];
+
+        factory(Topic::class)->create($data);
+
+        $this->command->line('Seeded Topic');
     }
 
 

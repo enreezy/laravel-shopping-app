@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Repository\TopicRepository;
 use Illuminate\Routing\ResponseFactory;
-use Illuminate\Routing\MessageFactory;
+use App\Repository\MessageRepository;
 use Illuminate\Http\Request;
+use Cart;
 
 class TopicController extends Controller
 {
@@ -15,7 +16,7 @@ class TopicController extends Controller
 
     protected $message;
 
-    public function __construct(TopicRepository $topic, ResponseFactory $response, MessageFactory $message)
+    public function __construct(TopicRepository $topic, ResponseFactory $response, MessageRepository $message)
     {
         $this->topic = $topic;
         $this->response = $response;
@@ -30,8 +31,9 @@ class TopicController extends Controller
      */
     public function index()
     {
+        $cart = Cart::getContent();
         $topics = $this->topic->paginate(20);
-        return $this->response->view('topics.index', ['topics'=>$topics]);
+        return $this->response->view('topics.index', ['topics'=>$topics,'cartCount'=>$cart->count()]);
     }
 
     /**
