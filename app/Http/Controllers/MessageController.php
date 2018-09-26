@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
+use Illuminate\Routing\ResponseFactory;
+use App\Repository\MessageRepository;
+use App\Repository\TopicRepository;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    protected $response;
+
+    protected $message;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ResponseFactory $response, MessageRepository $message, TopicRepository $topic)
     {
+        $this->response = $response;
+        $this->message = $message;
+        $this->topic = $topic;
         $this->middleware('auth:admin');
         $this->middleware('customer');
     }
@@ -25,8 +33,9 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $messages = Message::all();
-        return view('chat.chat', ['messages'=>$messages]);
+        $topics = $this->topic->all();
+        $messages = $this->message->all();
+        return $this->response->view('chat.index', ['messages'=>$messages, 'topics'=>$topics]);
     }
 
     /**
@@ -47,7 +56,8 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        Message::create($request->all());
+        $data = ['sender'=>$request->sender, 'receiver'=>$request->receiver, 'message'=>$request->message, 'topic'=>$request->topic];
+        $this->message->create($data);
     }
 
     /**

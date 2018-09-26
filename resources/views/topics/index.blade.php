@@ -67,7 +67,7 @@
                                     <tr>
                                         <th scope="row">{{ $topic->id }}</th>
                                         <td>{{ $topic->title }}</td>
-                                        <td> <button class="btn btn-info">Join</button> </td>
+                                        <td><a href="{{ route('topic.show', ['id'=>$topic->id]) }}"><button class="btn btn-info">Join</button></a></td>
                                     </tr>
                             
                                 </tbody>

@@ -120,7 +120,7 @@ Route::group(['prefix'=>'fashionsavvy'], function(){
 		Route::resource('/chat', 'MessageController', [
 			'names'=>[
 				'index' => 'message.index',
-				'store' => 'message.post',
+				'store' => 'message.store',
 				'show' => 'message.show',
 			]
 		]);

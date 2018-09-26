@@ -6,6 +6,7 @@ use App\Repository\TopicRepository;
 use Illuminate\Routing\ResponseFactory;
 use App\Repository\MessageRepository;
 use Illuminate\Http\Request;
+use App\Topic;
 use Cart;
 
 class TopicController extends Controller
@@ -64,9 +65,10 @@ class TopicController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Topic $topic)
-    {
+    {   
+        $cart = Cart::getContent();
         $messages = $this->message->where(['topic'=>$topic->id]);
-        return view('chat.index', ['topic'=>$topic, 'messages'=>$messages]);
+        return $this->response->view('chat.index', ['topic'=>$topic, 'messages'=>$messages, 'cartCount'=>$cart->count()]);
     }
 
     /**
