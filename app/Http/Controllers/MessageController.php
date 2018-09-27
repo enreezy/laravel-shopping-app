@@ -57,7 +57,7 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $data = ['sender'=>$request->sender, 'receiver'=>$request->receiver, 'message'=>$request->message, 'topic'=>$request->topic];
-        $this->message->create($data);
+        $this->message->store($data);
     }
 
     /**

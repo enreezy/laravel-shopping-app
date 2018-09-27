@@ -48,8 +48,6 @@
                         <!--Card content-->
                         <div class="card-body">
                           
-                            <script type="text/javascript" src="{{ asset('autobahn.js') }}"></script>
-                            <script src="{{ asset('jquery/jquery-1.9.0.js') }}"></script>
                             <script>
 
                               const messages = document.getElementById("messages")
@@ -102,6 +100,9 @@
 
                                             $.ajax({
                                               type:'POST',
+                                              headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                              },
                                               url: 'http://localhost:8000/fashionsavvy/customer/chat',
                                               data: {
                                                 sender:sender,
@@ -115,7 +116,6 @@
                                             }).fail( function(xhr, textStatus, errorThrown) {
                                                 alert(xhr.responseText);
                                             });
-      
 
                                             return false;
                                           });

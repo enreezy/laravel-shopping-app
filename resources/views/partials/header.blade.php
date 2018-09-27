@@ -15,8 +15,11 @@
   <link href="{{ asset('template/css/mdb.min.css') }}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{{ asset('template/css/style.min.css') }}" rel="stylesheet">
-  <script type="text/javascript" src="{{ asset('autobahn.js') }}"></script>
+  
   <script src="{{ asset('jquery/jquery-1.9.0.js') }}"></script>
+
+  <script type="text/javascript" src="{{ asset('autobahn.js') }}"></script>
+  
 
 
   
@@ -75,11 +78,34 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
+          @if(Route::is('visitor.index') || Route::is('shopping.index'))
           <li class="nav-item active">
             <a class="nav-link waves-effect" href="#">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
+          @else
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          @endif
+          @if(Auth::check())
+            @if(Route::is('topic.index') || Route::is('topic.index'))
+              <li class="nav-item active">
+                <a class="nav-link waves-effect" href="{{ route('topic.index') }}">Message Admin</a>
+                <span class="sr-only">(current)</span>
+              </li>
+              @else
+              <li class="nav-item">
+                <a class="nav-link waves-effect" href="{{ route('topic.index') }}">Message Admin</a>
+                <span class="sr-only">(current)</span>
+              </li>
+            @endif
+          @else
+
+          @endif
         </ul>
 
         <!-- Right -->
