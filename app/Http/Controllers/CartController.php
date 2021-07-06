@@ -63,7 +63,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         Cart::add($request->id, $request->name, $request->price, 1, ['size'=>$request->size, 'color'=>$request->color,'max'=>$request->quantity]);
-        return back()->withInput();
+        return back()->with(['added'=>'added']);
     }
 
     /**

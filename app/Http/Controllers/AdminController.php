@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
+use App\Repository\TopicRepository;
+use App\Repository\MessageRepository;
 
 class AdminController extends Controller
 {
     protected $response;
 
-    public function __construct(ResponseFactory $response)
+    protected $message;
+
+    protected $topic;
+
+    public function __construct(ResponseFactory $response, TopicRepository $topic, MessageRepository $message)
     {
         $this->middleware('auth:admin');
         $this->middleware('admin');
         $this->response = $response;
+        $this->topic = $topic;
+        $this->message = $message;
     }
     /**
      * Display a listing of the resource.
@@ -92,5 +100,24 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function topics()
+    {
+        $topics = $this->topic->paginate(20);
+        return $this->response->view('admin.topics.index', ['topics'=>$topics]);
+    }
+
+    public function showTopic($id)
+    {
+        $topic = $this->topic->find($id);
+        $messages = $this->message->where(['topic'=>$topic->id]);
+        return $this->response->view('admin.chat.index', ['topic'=>$topic, 'messages'=>$messages]);
+        //dd($messages);
+    }
+
+    public function messages()
+    {
+        
     }
 }

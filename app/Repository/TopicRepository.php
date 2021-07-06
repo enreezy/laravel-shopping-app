@@ -33,5 +33,10 @@ class TopicRepository
 		return $this->model->orderBy($col, $sort)->paginate($page);
 	}
 
+	public function find($id)
+	{
+		return $this->model->findOrFail($id);
+	}
+
 
 }

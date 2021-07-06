@@ -147,4 +147,9 @@ class VisitorController extends Controller
         Cart::empty();
         return redirect()->back();
     }
+
+    public function customize()
+    {
+        return $this->response->view('photoshop.index');
+    }
 }

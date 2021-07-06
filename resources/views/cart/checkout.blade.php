@@ -5,6 +5,11 @@
 
 <!--Main layout-->
   <main class="mt-5 pt-4">
+
+    @if(session('message'))
+      <div class="alert alert-success">Ordered Successfully!</div>
+      @endif
+
     <div class="container wow fadeIn">
 
       <!-- Table  -->

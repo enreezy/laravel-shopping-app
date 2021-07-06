@@ -14,6 +14,10 @@
     <link href="{{ asset('admin/css/mdb.min.css') }}" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="{{ asset('admin/css/style.min.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('jquery/jquery-1.9.0.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('autobahn.js') }}"></script>
 </head>
 
 <body class="grey lighten-3">
@@ -55,6 +59,14 @@
                         <li class="nav-item">
                             <a class="nav-link waves-effect" href="{{ route('order.index') }}">Orders</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="{{ route('admin.topic') }}">Messages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link waves-effect" href="{{ route('adminimage.index') }}">Images</a>
+                        </li>
+
+                        
                     </ul>
 
                     <!-- Right -->
@@ -105,6 +117,10 @@
                     <i class="fa fa-table mr-3"></i>Category</a>
                 <a href="{{ route('order.index') }}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-money mr-3"></i>Orders</a>
+                <a href="{{ route('admin.topic') }}" class="list-group-item list-group-item-action waves-effect">
+                    <i class="fa fa-inbox mr-3"></i>Messages</a>
+                    <a href="{{ route('adminimage.index') }}" class="list-group-item list-group-item-action waves-effect">
+                    <i class="fa fa-camera mr-3"></i>Images</a>
             </div>
 
         </div>

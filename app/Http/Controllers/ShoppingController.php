@@ -68,7 +68,8 @@ class ShoppingController extends Controller
         ];
 
         $this->order->store($data);
-        return $this->response->redirectToRoute('checkout.index');
+        Cart::clear();
+        return $this->response->redirectToRoute('checkout.index')->with('message','success');
     }
 
     /**

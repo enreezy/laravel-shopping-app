@@ -5,7 +5,9 @@
   <!--Main layout-->
     <main class="pt-5 mx-lg-5">
         <div class="container-fluid mt-5">
-
+            @if(session('message'))
+              <div class="alert alert-danger">Image Deleted!</div>
+            @endif
             <!-- Heading -->
             <div class="card mb-4 wow fadeIn">
 
@@ -17,15 +19,6 @@
                         <span>/</span>
                         <span>Dashboard</span>
                     </h4>
-
-                    <form class="d-flex justify-content-center">
-                        <!-- Default input -->
-                        <input type="search" placeholder="Type your query" aria-label="Search" class="form-control">
-                        <button class="btn btn-primary btn-sm my-0 p" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-
-                    </form>
 
                 </div>
 
@@ -47,9 +40,8 @@
                                 <thead class="blue lighten-4">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Date</th>
+                                        <th>Image</th>
+                                        <th>Sender</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -57,25 +49,25 @@
 
                                 <!-- Table body -->
                                 <tbody>
-                                <?php $c = 1; ?>
-                                @foreach($orders as $order)
+                                @foreach($images as $image)
                                     <tr>
-                                        <th scope="row">{{ $c }}</th>
-                                        <td>{{ $order->firstname }} {{ $order->lastname }}</td>
-                                        <td>{{ $order->address }}</td>
-                                        <td>{{ $order->created_at }}</td>
+                                        <th scope="row">{{ $image->id }}</th>
+                                        <td><img id="output" style="width:150px;height:150px;" src="{{ asset('storage/images/' . $image->img_src) }}"></td>
+                                        <td>{{ $image->sender->name }}</td>
                                         <td>
-                                        	<a href="{{ route('order.show', ['id'=>$order->id]) }}"><button class="btn btn-info">View Details</button></a>
+                                            
+                                            <a href="{{ route('adminimage.destroy', ['id'=>$image->id]) }}"><button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button></a>
+                                          
                                         </td>
                                     </tr>
+                            
                                 </tbody>
-                                	<?php $c++; ?>
                                 @endforeach
                                 <!-- Table body -->
                             </table>
                             <!-- Table  -->
 
-                            {{ $orders->links() }}
+                            {{ $images->links() }}
 
                         </div>
 

@@ -43,6 +43,8 @@ Route::resource('/fashionsavvy', 'VisitorController', [
 	]
 ]);
 
+Route::get('/fashionsavvy/customize/index','VisitorController@customize')->name('customize');
+
 Route::get('/fashionsavvy/empty','VisitorController@empty')->name('visitor.empty');
 
 Route::group(['prefix'=>'fashionsavvy'], function(){
@@ -57,6 +59,20 @@ Route::group(['prefix'=>'fashionsavvy'], function(){
 				'index' => 'admin.index'
 			]
 		]);
+
+		/********************************************************************
+		*********************************************************************
+		*						Admin Message								*
+		*********************************************************************
+		*********************************************************************/
+		Route::get('/topics', 'AdminController@topics')->name('admin.topic');
+		Route::get('/topics/{id}', 'AdminController@showTopic')->name('admin.showtopic');
+		Route::post('/topics', 'AdminController@storeTopic')->name('admin.storeTopic');
+		Route::get('/chat', 'AdminController@messages')->name('admin.message');
+		Route::post('/chat', 'AdminController@storeMessage')->name('admin.storemessage');
+		
+
+
 
 		Route::resource('/items', 'ItemController', [
 			'names' => [
@@ -93,6 +109,10 @@ Route::group(['prefix'=>'fashionsavvy'], function(){
 	            'destroy' => 'order.destroy',
 			]
 		]);
+
+
+		Route::get('/images', 'AdminImageController@index')->name('adminimage.index');
+		Route::get('/images/{id}', 'AdminImageController@destroy')->name('adminimage.destroy');
 	});
 	
 });
@@ -133,7 +153,18 @@ Route::group(['prefix'=>'fashionsavvy'], function(){
 		]);
 
 		Route::get('/shopping/empty','CartController@empty')->name('shopping.empty');
+
+		/********************************************************************
+		*********************************************************************
+		*						Customer Message								*
+		*********************************************************************
+		*********************************************************************/
+
+		Route::post('/images', 'AdminImageController@store')->name('adminimage.store');
+
 	});
+
+
 });
 
 

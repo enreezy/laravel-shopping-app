@@ -106,6 +106,11 @@
           @else
 
           @endif
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{{ route('customize') }}" target="_blank">Customize
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
         </ul>
 
         <!-- Right -->

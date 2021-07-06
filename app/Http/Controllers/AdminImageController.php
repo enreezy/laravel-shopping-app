@@ -2,34 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\AdminImage;
 use Illuminate\Routing\ResponseFactory;
-use App\Repository\MessageRepository;
 use App\Repository\AdminImageRepository;
-use App\Repository\TopicRepository;
 use Illuminate\Http\Request;
 
-class MessageController extends Controller
+class AdminImageController extends Controller
 {
     protected $response;
 
-    protected $message;
-
     protected $admin;
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(ResponseFactory $response, MessageRepository $message, TopicRepository $topic, AdminImageRepository $admin)
+
+    public function __construct(AdminImageRepository $admin, ResponseFactory $response)
     {
         $this->response = $response;
-        $this->message = $message;
-        $this->topic = $topic;
         $this->admin = $admin;
-        $this->middleware('auth:admin');
-        $this->middleware('customer');
-    }
 
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,9 +27,8 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $topics = $this->topic->all();
-        $messages = $this->message->all();
-        return $this->response->view('chat.index', ['messages'=>$messages, 'topics'=>$topics]);
+        $images = $this->admin->paginate(20);
+        return $this->response->view('admin.images.index', ['images'=>$images]);
     }
 
     /**
@@ -49,7 +38,7 @@ class MessageController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -60,28 +49,40 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $data = ['sender'=>$request->sender, 'receiver'=>$request->receiver, 'message'=>$request->message, 'topic'=>$request->topic];
-        $this->message->store($data);
+        $image = $request->file('img_src');
+        $img_url = $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+        $file = $request->file('img_src')->storeAs('storage/images', $img_url, 'public');
+
+        $sender_id = $request->sender_id;
+
+        $data = [
+            'img_src' => $img_url,
+            'sender_id' => $sender_id
+        ];
+
+        $this->admin->store($data);
+
+        return redirect()->back()->with('message', 'success');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Message  $message
+     * @param  \App\AdminImage  $adminImage
      * @return \Illuminate\Http\Response
      */
-    public function show(Message $message)
+    public function show(AdminImage $adminImage)
     {
-        
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Message  $message
+     * @param  \App\AdminImage  $adminImage
      * @return \Illuminate\Http\Response
      */
-    public function edit(Message $message)
+    public function edit(AdminImage $adminImage)
     {
         //
     }
@@ -90,10 +91,10 @@ class MessageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Message  $message
+     * @param  \App\AdminImage  $adminImage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Message $message)
+    public function update(Request $request, AdminImage $adminImage)
     {
         //
     }
@@ -101,11 +102,14 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Message  $message
+     * @param  \App\AdminImage  $adminImage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Message $message)
+    public function destroy($id)
     {
-        //
+        $adminImage = $this->admin->findOrFail($id);
+        $this->admin->delete($adminImage);
+
+        return redirect()->back()->with('message','deleted');
     }
 }

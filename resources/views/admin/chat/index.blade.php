@@ -1,8 +1,8 @@
-@extends('cart.layouts')
+@extends('admin.layouts')
 
 
 @section('content')
-
+    
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   #messages { list-style-type: none; margin: 0; padding: 0; }
@@ -11,40 +11,28 @@
 </style>
 
 
+  <!--Main layout-->
+    <main class="pt-5 mx-lg-5">
+        <div class="container-fluid mt-5">
 
-<!--Main layout-->
-  <main>
-    <div class="container">
+            <!-- Heading -->
+            <div class="card mb-4 wow fadeIn">
 
-      @if(session('message'))
-      <div class="alert alert-success">Message Send Successfully!</div>
-      @endif
+                <!--Card content-->
+                <div class="card-body d-sm-flex justify-content-between">
 
+                    <h4 class="mb-2 mb-sm-0 pt-1">
+                        <a href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">Home Page</a>
+                        <span>/</span>
+                        <span>Dashboard</span>
+                    </h4>
 
-      <!--Navbar-->
-      <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
+                </div>
 
-        <!-- Navbar brand -->
-        <span class="navbar-brand">Chat</span>
+            </div>
+            <!-- Heading -->
 
-        <!-- Collapse button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
-          aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Collapsible content -->
-        <div class="collapse navbar-collapse" id="basicExampleNav">
-        </div>
-        <!-- Collapsible content -->
-
-      </nav>
-      <!--/.Navbar-->
-
-      <!--Section: Products v.3-->
-      <section class="text-center mb-4">
-
-        <!--Grid column-->
+                <!--Grid column-->
                 <div class="col-md-12 mb-6">
 
                     <!--Card-->
@@ -97,7 +85,7 @@
 
                                           // publish/send data to a certain topic
                                           
-                                          $('#FormMessage').submit(function(){
+                                          $('form').submit(function(){
                                             conn.publish('{{ $topic->title }}','{{Auth::user()->name}}: ' + $('#m').val());
                                             
                                             
@@ -148,44 +136,10 @@
                             </div>
 
 
-                            <form action="" id="FormMessage">
+                            <form action="">
                               
-                              <input id="m" autocomplete="off" class="form-control" /><button class="btn btn-success"><i class="fa fa-inbox"></i> Send</button>
+                              <input id="m" autocomplete="off" class="form-control" /><button class="btn btn-success"><i class="fa fa-message"></i> Send</button>
                             </form>
-
-                            <button class="btn btn-info" data-toggle="modal" data-target="#sendImage"><i class="fa fa-camera"></i> Send Image</button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="sendImage" role="dialog">
-                              <div class="modal-dialog">
-                              <!-- Modal content-->
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h4 class="modal-title pull-left">Send Image</h4>
-                                </div>
-                                <div class="modal-body">
-                                  <form action="{{ route('adminimage.store') }}" method="post" enctype="multipart/form-data">
-
-                                    {{ csrf_field() }}
-                                    
-                                  <label>Image</label>
-                                  <input type="file" name="img_src" class="form-control">
-                                  <input type="hidden" name="sender_id" value="{{ Auth::user()->id }}" />
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="submit" class="btn btn-primary">Submit</button>
-                                  </form>
-                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                                
-                              </div>
-
-                              </div>
-                            </div>
-                            
-                          </div>
-                        </div>
-
 
                             
 
@@ -197,12 +151,9 @@
                 </div>
                 <!--Grid column-->
 
-       
 
-      </section>
-      <!--Section: Products v.3-->
-    </div>
-  </main>
-  <!--Main layout-->
-
+        </div>
+        <!--/.Card-->
+    </main>
+    <!--Main layout-->
 @endsection

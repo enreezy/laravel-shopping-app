@@ -4,6 +4,10 @@
 
 <!--Main layout-->
   <main class="mt-5 pt-4">
+
+    @if(session('added'))
+      <div class="alert alert-success text-center">Item Added to Cart!</div>
+      @endif
     <div class="container dark-grey-text mt-5">
 
       <!--Grid row-->
